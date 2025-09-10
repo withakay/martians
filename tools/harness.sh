@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GOLDENS_DIR="$ROOT_DIR/goldens"
 SAMPLES_DIR="$ROOT_DIR/samples"
+OUT_DIR="$ROOT_DIR/.harness_out"
 
 # Colors (enabled on TTY or in GitHub Actions)
 if [[ -t 1 || -n "${GITHUB_ACTIONS:-}" ]]; then
@@ -80,8 +81,16 @@ run_one_lang() {
     if ! cmp -s "$tmp_norm" "$exp_norm"; then
       overall="MISMATCH"
       echo "--- expected"; cat "$exp_norm"; echo "--- actual"; cat "$tmp_norm"; echo "--- diff"; diff -u "$exp_norm" "$tmp_norm" || true
+      # still store actual for cross-diff
+      local base name outpath
+      base="$(basename "$in_file")"; name="${base%-input.txt}"
+      outpath="$OUT_DIR/$lang_dir"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
       rm -f "$tmp_out" "$tmp_norm" "$exp_norm"; break
     fi
+    # store normalized output for cross-diff
+    local base name outpath
+    base="$(basename "$in_file")"; name="${base%-input.txt}"
+    outpath="$OUT_DIR/$lang_dir"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
     rm -f "$tmp_out" "$tmp_norm" "$exp_norm"
   done
 
@@ -105,6 +114,7 @@ main() {
   local failures=0
   local tested=0
   local -a results=()
+  rm -rf "$OUT_DIR" && mkdir -p "$OUT_DIR"
   build_inputs
   for dir in $(langs_list); do
     [[ ! -d "$ROOT_DIR/$dir" ]] && continue
@@ -136,6 +146,40 @@ main() {
       done
       echo ""
       echo "Run locally: \`./tools/harness.sh\` or \`make test-all\`"
+    } >> "$GITHUB_STEP_SUMMARY"
+  fi
+
+  # Cross-implementation diff
+  local cross=0 cross_issues=0
+  for pair in "${inputs[@]}"; do
+    IFS=":" read -r in_file out_file <<<"$pair"
+    local base name
+    base="$(basename "$in_file")"; name="${base%-input.txt}"
+    # choose first existing output as reference
+    local ref="" ref_lang=""
+    for d in $(langs_list); do
+      if [[ -f "$OUT_DIR/$d/$name.out" ]]; then ref="$OUT_DIR/$d/$name.out"; ref_lang="$d"; break; fi
+    done
+    [[ -z "$ref" ]] && continue
+    cross=$((cross+1))
+    for d in $(langs_list); do
+      [[ "$d" == "$ref_lang" ]] && continue
+      if [[ -f "$OUT_DIR/$d/$name.out" ]]; then
+        if ! cmp -s "$ref" "$OUT_DIR/$d/$name.out"; then
+          cross_issues=$((cross_issues+1))
+          echo "[DIFF] $name: $d differs from $ref_lang"
+          diff -u "$ref" "$OUT_DIR/$d/$name.out" || true
+        fi
+      fi
+    done
+  done
+
+  # Summarize cross-diff in GitHub
+  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    {
+      echo "### Cross-implementation diffs"
+      echo "- Inputs compared: $cross"
+      echo "- Differences found: $cross_issues"
     } >> "$GITHUB_STEP_SUMMARY"
   fi
 

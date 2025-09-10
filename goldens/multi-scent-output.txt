@@ -1,0 +1,6 @@
+1 1 N LOST
+1 1 E LOST
+1 1 N
+1 1 E
+0 1 W
+0 1 W LOST
