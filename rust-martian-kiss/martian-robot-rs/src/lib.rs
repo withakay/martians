@@ -139,6 +139,17 @@ impl TryFrom<char> for Instruction {
     }
 }
 
+impl Instruction {
+    fn from_char(c: char) -> Option<Self> {
+        match c {
+            'L' => Some(Instruction::Left),
+            'R' => Some(Instruction::Right),
+            'F' => Some(Instruction::Forward),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Scenario {
     pub grid: Grid,
@@ -181,8 +192,8 @@ impl FromStr for Scenario {
             };
             let instructions = cmds
                 .chars()
-                .map(|c| Instruction::try_from(c))
-                .collect::<Result<Vec<_>, _>>()?;
+                .filter_map(Instruction::from_char)
+                .collect::<Vec<_>>();
             robots.push((robot, instructions));
         }
         Ok(Scenario { grid, robots })
