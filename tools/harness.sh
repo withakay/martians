@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GOLDENS_DIR="$ROOT_DIR/goldens"
+GOLDENS_DIR="$ROOT_DIR/goldens" # legacy location for expected outputs
 SAMPLES_DIR="$ROOT_DIR/samples"
 OUT_DIR="$ROOT_DIR/.harness_out"
 
@@ -21,21 +21,36 @@ inputs=()
 
 build_inputs() {
   local pairs=()
-  # Legacy pair
-  if [[ -f "$SAMPLES_DIR/sample-input.txt" && -f "$GOLDENS_DIR/sample-output.txt" ]]; then
-    pairs+=("$SAMPLES_DIR/sample-input.txt:$GOLDENS_DIR/sample-output.txt")
+
+  # Determine inputs/outputs roots (prefer new structure under samples/, fall back to legacy paths)
+  local inputs_root outputs_root
+  if [[ -d "$SAMPLES_DIR/inputs" ]]; then
+    inputs_root="$SAMPLES_DIR/inputs"
+  else
+    inputs_root="$SAMPLES_DIR"
   fi
+  if [[ -d "$SAMPLES_DIR/outputs" ]]; then
+    outputs_root="$SAMPLES_DIR/outputs"
+  else
+    outputs_root="$GOLDENS_DIR"
+  fi
+
+  # Common pair for sample
+  if [[ -f "$inputs_root/sample-input.txt" && -f "$outputs_root/sample-output.txt" ]]; then
+    pairs+=("$inputs_root/sample-input.txt:$outputs_root/sample-output.txt")
+  fi
+
   # Auto-discover <name>-input.txt => <name>-output.txt
   while IFS= read -r -d '' f; do
-    local base
+    local base name out
     base="$(basename "$f")"
     [[ "$base" == "sample-input.txt" ]] && continue
-    local name="${base%-input.txt}"
-    local out="$GOLDENS_DIR/${name}-output.txt"
+    name="${base%-input.txt}"
+    out="$outputs_root/${name}-output.txt"
     if [[ -f "$out" ]]; then
       pairs+=("$f:$out")
     fi
-  done < <(find "$SAMPLES_DIR" -maxdepth 1 -type f -name "*-input.txt" -print0 | sort -z)
+  done < <(find "$inputs_root" -maxdepth 1 -type f -name "*-input.txt" -print0 | sort -z)
   inputs=("${pairs[@]}")
 }
 
