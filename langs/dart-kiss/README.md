@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f dart-martian-kiss/Dockerfile -t martian:dart-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:dart-martian-kiss
+docker build -f langs/dart-kiss/Dockerfile -t martian:dart-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:dart-kiss
 ```
 
 ### Assumptions & Gaps

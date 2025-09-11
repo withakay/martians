@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f php-martian-kiss/Dockerfile -t martian:php-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:php-martian-kiss
+docker build -f langs/php-kiss/Dockerfile -t martian:php-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:php-kiss
 ```
 
 ### Assumptions & Gaps

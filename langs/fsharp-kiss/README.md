@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f fsharp-martian-kiss/Dockerfile -t martian:fsharp-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:fsharp-martian-kiss
+docker build -f langs/fsharp-kiss/Dockerfile -t martian:fsharp-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:fsharp-kiss
 ```
 
 ### Assumptions & Gaps

@@ -5,14 +5,14 @@ Builds the `martian-robot-rs` crate and runs the binary that reads from stdin an
 Docker:
 
 ```
-docker build -f rust-martian-kiss/Dockerfile -t martian:rust-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:rust-martian-kiss
+docker build -f langs/rust-kiss/Dockerfile -t martian:rust-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:rust-kiss
 ```
 
 Local (if Rust installed):
 
 ```
-cd martian-robot-rs && cargo run --quiet --release < ../samples/sample-input.txt
+cd langs/rust-kiss/martian-robot-rs && cargo run --quiet --release < ../../samples/sample-input.txt
 ```
 
 ### Assumptions & Gaps

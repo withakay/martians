@@ -5,8 +5,8 @@ Builds and runs the existing CLI under `MartianRobot/src/MartianRobot.Cli`.
 Docker:
 
 ```
-docker build -f csharp-martian-kiss/Dockerfile -t martian:csharp-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:csharp-martian-kiss
+docker build -f langs/csharp-kiss/Dockerfile -t martian:csharp-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:csharp-kiss
 ```
 
 Local (if .NET SDK 9.0+ installed):

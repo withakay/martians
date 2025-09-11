@@ -5,8 +5,8 @@ Layered structure with Domain, Application, and CLI packages. No external deps.
 Docker:
 
 ```
-docker build -f python-martian-ddd/Dockerfile -t martian:python-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:python-martian-ddd
+docker build -f langs/python-ddd/Dockerfile -t martian:python-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:python-ddd
 ```
 
 ### Assumptions & Gaps

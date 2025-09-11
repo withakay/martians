@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f ocaml-martian-ddd/Dockerfile -t martian:ocaml-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:ocaml-martian-ddd
+docker build -f langs/ocaml-ddd/Dockerfile -t martian:ocaml-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:ocaml-ddd
 ```
 
 ### Assumptions & Gaps

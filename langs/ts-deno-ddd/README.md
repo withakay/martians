@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f ts-deno-martian-ddd/Dockerfile -t martian:ts-deno-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:ts-deno-martian-ddd
+docker build -f langs/ts-deno-ddd/Dockerfile -t martian:ts-deno-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:ts-deno-ddd
 ```
 
 ### Assumptions & Gaps

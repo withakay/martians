@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f lua-martian-kiss/Dockerfile -t martian:lua-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:lua-martian-kiss
+docker build -f langs/lua-kiss/Dockerfile -t martian:lua-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:lua-kiss
 ```
 
 ### Assumptions & Gaps

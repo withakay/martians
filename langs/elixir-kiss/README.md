@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f elixir-martian-kiss/Dockerfile -t martian:elixir-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:elixir-martian-kiss
+docker build -f langs/elixir-kiss/Dockerfile -t martian:elixir-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:elixir-kiss
 ```
 
 ### Assumptions & Gaps

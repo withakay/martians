@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f go-martian-ddd/Dockerfile -t martian:go-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:go-martian-ddd
+docker build -f langs/go-ddd/Dockerfile -t martian:go-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:go-ddd
 ```
 
 ### Assumptions & Gaps

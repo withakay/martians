@@ -3,14 +3,14 @@
 Docker:
 
 ```
-docker build -f node-martian-kiss/Dockerfile -t martian:node-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:node-martian-kiss
+docker build -f langs/node-kiss/Dockerfile -t martian:node-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:node-kiss
 ```
 
 Local:
 
 ```
-node node-martian-kiss/main.js < samples/sample-input.txt
+node langs/node-kiss/main.js < samples/sample-input.txt
 ```
 
 ### Assumptions & Gaps

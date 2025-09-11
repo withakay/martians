@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f scala-martian-kiss/Dockerfile -t martian:scala-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:scala-martian-kiss
+docker build -f langs/scala-kiss/Dockerfile -t martian:scala-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:scala-kiss
 ```
 
 ### Assumptions & Gaps

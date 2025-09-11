@@ -3,14 +3,14 @@
 Docker:
 
 ```
-docker build -f python-martian-kiss/Dockerfile -t martian:python-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:python-martian-kiss
+docker build -f langs/python-kiss/Dockerfile -t martian:python-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:python-kiss
 ```
 
 Local:
 
 ```
-python python-martian-kiss/main.py < samples/sample-input.txt
+python langs/python-kiss/main.py < samples/sample-input.txt
 ```
 
 ### Assumptions & Gaps

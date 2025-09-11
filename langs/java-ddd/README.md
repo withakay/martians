@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f java-martian-ddd/Dockerfile -t martian:java-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:java-martian-ddd
+docker build -f langs/java-ddd/Dockerfile -t martian:java-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:java-ddd
 ```
 
 ### Assumptions & Gaps

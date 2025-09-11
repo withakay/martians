@@ -3,14 +3,14 @@
 Docker:
 
 ```
-docker build -f ruby-martian-kiss/Dockerfile -t martian:ruby-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:ruby-martian-kiss
+docker build -f langs/ruby-kiss/Dockerfile -t martian:ruby-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:ruby-kiss
 ```
 
 Local:
 
 ```
-ruby ruby-martian-kiss/main.rb < samples/sample-input.txt
+ruby langs/ruby-kiss/main.rb < samples/sample-input.txt
 ```
 
 ### Assumptions & Gaps

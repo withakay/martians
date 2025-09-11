@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f haskell-martian-kiss/Dockerfile -t martian:haskell-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:haskell-martian-kiss
+docker build -f langs/haskell-kiss/Dockerfile -t martian:haskell-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:haskell-kiss
 ```
 
 ### Assumptions & Gaps

@@ -3,14 +3,14 @@
 Docker:
 
 ```
-docker build -f go-martian-kiss/Dockerfile -t martian:go-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:go-martian-kiss
+docker build -f langs/go-kiss/Dockerfile -t martian:go-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:go-kiss
 ```
 
 Local:
 
 ```
-go run go-martian-kiss/main.go < samples/sample-input.txt
+go run langs/go-kiss/main.go < samples/sample-input.txt
 ```
 
 ### Assumptions & Gaps

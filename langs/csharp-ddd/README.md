@@ -9,8 +9,8 @@ This implementation demonstrates a simple Domain-Driven Design (DDD) layering:
 Docker:
 
 ```
-docker build -f csharp-martian-ddd/Dockerfile -t martian:csharp-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:csharp-martian-ddd
+docker build -f langs/csharp-ddd/Dockerfile -t martian:csharp-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:csharp-ddd
 ```
 
 ### Assumptions & Gaps

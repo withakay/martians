@@ -13,7 +13,7 @@ jobs:
 
       - name: List implementations
         run: |
-          ls -1d *-martian* || true
+          ls -1d langs/* || true
 
       - name: Build and Test (all)
         env:

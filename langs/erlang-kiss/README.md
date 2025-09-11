@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f erlang-martian-kiss/Dockerfile -t martian:erlang-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:erlang-martian-kiss
+docker build -f langs/erlang-kiss/Dockerfile -t martian:erlang-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:erlang-kiss
 ```
 
 ### Assumptions & Gaps

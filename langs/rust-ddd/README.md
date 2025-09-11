@@ -3,8 +3,8 @@
 Docker:
 
 ```
-docker build -f rust-martian-ddd/Dockerfile -t martian:rust-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:rust-martian-ddd
+docker build -f langs/rust-ddd/Dockerfile -t martian:rust-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:rust-ddd
 ```
 
 ### Assumptions & Gaps
