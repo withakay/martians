@@ -3,7 +3,7 @@
 This repository contains working solutions to the Martian Robots programming challenge across many languages. It provides both minimal “Keep It Simple (KISS)” versions and more structured Domain‑Driven Design (DDD) examples, all runnable in Docker and verified by a common harness.
 
 - Problem statement: see `CHALLENGE.md` (adapted from Red Badger Coding Challenge 2018).
-- Golden I/O: sample input in `samples/sample-input.txt`, expected output in `goldens/sample-output.txt`.
+- Golden I/O: sample input in `samples/inputs/sample-input.txt`, expected output in `samples/outputs/sample-output.txt`.
 
 ## Implementations
 
@@ -69,14 +69,14 @@ Example with Python (DDD):
 
 ```bash
 docker build -f langs/python-ddd/Dockerfile -t martian:python-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:python-ddd
+cat samples/inputs/sample-input.txt | docker run --rm -i martian:python-ddd
 ```
 
 Example with C# (.NET, KISS wrapper around the reference CLI):
 
 ```bash
 docker build -f langs/csharp-kiss/Dockerfile -t martian:csharp-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:csharp-kiss
+cat samples/inputs/sample-input.txt | docker run --rm -i martian:csharp-kiss
 ```
 
 For local (non‑Docker) runs, see each language folder’s README.
@@ -87,7 +87,7 @@ For local (non‑Docker) runs, see each language folder’s README.
 
 - Discover folders under `langs/*`
 - Build each image using its `Dockerfile`
-- For each `samples/*-input.txt`, pipe into the container and compare against `goldens/*-output.txt`
+- For each `samples/inputs/*-input.txt`, pipe into the container and compare against `samples/outputs/*-output.txt`
 - Normalize line endings and trailing blanks on both actual and expected
 
 Tip: The expected output includes a trailing blank line; implementations are written to match it exactly.
@@ -112,7 +112,7 @@ Tip: The expected output includes a trailing blank line; implementations are wri
 
 1. Create a folder under `langs/` named like `langs/<lang>-kiss` (or `langs/<lang>-ddd`).
 2. Add a `Dockerfile` that produces an executable reading from STDIN and writing to STDOUT.
-3. Ensure output exactly matches `goldens/sample-output.txt` for `samples/sample-input.txt`.
+3. Ensure output exactly matches `samples/outputs/sample-output.txt` for `samples/inputs/sample-input.txt`.
 4. Add a short README with Docker build/run instructions.
 5. Run `./tools/harness.sh` to verify.
 
