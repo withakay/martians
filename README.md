@@ -134,7 +134,7 @@ flowchart LR
   Nav --> Grid[Domain: Grid]
   Nav --> Scents[(Domain Port: IScentRepository)]
   Robot -->|state| Mission
-  Mission --> Output[\\n STDOUT lines]
+  Mission --> Output[STDOUT lines]
 ```
 
 Layering and dependencies:
