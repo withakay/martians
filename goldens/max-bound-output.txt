@@ -1,0 +1,5 @@
+50 50 N LOST
+0 0 S LOST
+1 50 E
+50 0 E LOST
+

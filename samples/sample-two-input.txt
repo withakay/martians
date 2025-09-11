@@ -1,0 +1,8 @@
+2 2
+0 0 N
+FRFRFRF
+0 0 N
+FFF
+0 2 N
+F
+

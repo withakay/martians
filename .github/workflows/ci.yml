@@ -1,0 +1,22 @@
+name: Tests
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: List implementations
+        run: |
+          ls -1d *-martian* || true
+
+      - name: Build and Test (all)
+        env:
+          CONTINUE: "1" # run all implementations, don't stop at first failure
+        run: |
+          ./tools/harness.sh

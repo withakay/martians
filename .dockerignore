@@ -1,0 +1,17 @@
+**/bin
+**/obj
+**/target
+**/node_modules
+.git
+.idea
+.vscode
+Dockerfile*
+*.o
+*.class
+*.jar
+*.exe
+*.dll
+*.pdb
+*.dSYM
+*.log
+

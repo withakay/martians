@@ -1,0 +1,10 @@
+5 5
+1 1 E
+FFFFF
+1 1 N
+FFFFF
+1 1 E
+FFFFFF
+1 1 N
+FFFFFF
+
