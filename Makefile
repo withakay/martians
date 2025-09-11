@@ -40,7 +40,7 @@ test-$(1): ## Test $(1) via harness
 	@LANGS=$(1) ./tools/harness.sh
 
 run-$(1): ## Run $(1) with sample input 1
-	@cat samples/sample-input.txt | docker run --rm -i martian:$(notdir $(1))
+	@cat samples/inputs/sample-input.txt | docker run --rm -i martian:$(notdir $(1))
 
 endef
 
