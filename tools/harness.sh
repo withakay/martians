@@ -40,14 +40,20 @@ build_inputs() {
 }
 
 discover_langs() {
-  # Folders ending with -martian or variants like -martian-kiss/-martian-ddd
-  (cd "$ROOT_DIR" && ls -1d *-martian* 2>/dev/null || true)
+  # Implementations now live under langs/*
+  (cd "$ROOT_DIR" && ls -1d langs/* 2>/dev/null || true)
 }
 
 langs_list() {
   if [[ -n "$LANGS" ]]; then
-    # Allow comma- or space-separated
-    echo "$LANGS" | tr ',' ' '
+    # Allow comma- or space-separated; accept bare names or langs/* paths
+    for item in $(echo "$LANGS" | tr ',' ' '); do
+      if [[ -d "$ROOT_DIR/$item" ]]; then
+        echo "$item"
+      elif [[ -d "$ROOT_DIR/langs/$item" ]]; then
+        echo "langs/$item"
+      fi
+    done
   else
     discover_langs
   fi
@@ -59,9 +65,11 @@ run_one_lang() {
   local lang_dir="$1"
   local overall="OK"
 
-  [[ -n "${GITHUB_ACTIONS:-}" ]] && echo "::group::Build $lang_dir"
+  local image_tag
+  image_tag="$(basename "$lang_dir")"
+  [[ -n "${GITHUB_ACTIONS:-}" ]] && echo "::group::Build $image_tag ($lang_dir)"
   log "Building docker image for $lang_dir"
-  if ! docker build -f "$ROOT_DIR/$lang_dir/Dockerfile" -t "martian:$lang_dir" "$ROOT_DIR"; then
+  if ! docker build -f "$ROOT_DIR/$lang_dir/Dockerfile" -t "martian:$image_tag" "$ROOT_DIR"; then
     overall="BUILD_FAIL"
   fi
   [[ -n "${GITHUB_ACTIONS:-}" ]] && echo "::endgroup::"
@@ -70,7 +78,7 @@ run_one_lang() {
     IFS=":" read -r in_file out_file <<<"$pair"
     log "Testing $lang_dir against $(basename "$in_file")"
     tmp_out="$(mktemp)"
-    if ! docker run --rm -i "martian:$lang_dir" < "$in_file" | sed -e 's/\r$//' > "$tmp_out"; then
+    if ! docker run --rm -i "martian:$image_tag" < "$in_file" | sed -e 's/\r$//' > "$tmp_out"; then
       overall="RUNTIME_FAIL"; rm -f "$tmp_out"; break
     fi
     # Normalize actual: trim trailing blank lines, then ensure exactly one trailing newline
@@ -84,25 +92,25 @@ run_one_lang() {
       # still store actual for cross-diff
       local base name outpath
       base="$(basename "$in_file")"; name="${base%-input.txt}"
-      outpath="$OUT_DIR/$lang_dir"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
+      outpath="$OUT_DIR/$image_tag"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
       rm -f "$tmp_out" "$tmp_norm" "$exp_norm"; break
     fi
     # store normalized output for cross-diff
     local base name outpath
     base="$(basename "$in_file")"; name="${base%-input.txt}"
-    outpath="$OUT_DIR/$lang_dir"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
+    outpath="$OUT_DIR/$image_tag"; mkdir -p "$outpath"; cp "$tmp_norm" "$outpath/$name.out"
     rm -f "$tmp_out" "$tmp_norm" "$exp_norm"
   done
 
   case "$overall" in
     OK)
-      printf "%b[OK]%b %s\n" "$C_GREEN" "$C_RESET" "$lang_dir" ;;
+      printf "%b[OK]%b %s\n" "$C_GREEN" "$C_RESET" "$image_tag" ;;
     BUILD_FAIL)
-      printf "%b[FAIL]%b %s (build)\n" "$C_RED" "$C_RESET" "$lang_dir" ;;
+      printf "%b[FAIL]%b %s (build)\n" "$C_RED" "$C_RESET" "$image_tag" ;;
     RUNTIME_FAIL)
-      printf "%b[FAIL]%b %s (runtime)\n" "$C_RED" "$C_RESET" "$lang_dir" ;;
+      printf "%b[FAIL]%b %s (runtime)\n" "$C_RED" "$C_RESET" "$image_tag" ;;
     MISMATCH)
-      printf "%b[FAIL]%b %s (mismatch)\n" "$C_RED" "$C_RESET" "$lang_dir" ;;
+      printf "%b[FAIL]%b %s (mismatch)\n" "$C_RED" "$C_RESET" "$image_tag" ;;
   esac
 
   # expose result to caller

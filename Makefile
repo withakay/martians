@@ -3,7 +3,7 @@
 .PHONY: help all list ci \
 build-% test-% run-%
 
-LANG_DIRS := $(wildcard *-martian*)
+LANG_DIRS := $(wildcard langs/*)
 
 help: ## Show this help
 		@echo "Available targets:"
@@ -11,8 +11,8 @@ help: ## Show this help
 		@echo "\nPer-language targets are generated automatically for: $(LANG_DIRS)"
 		@echo "Examples:"
 		@echo "  make all                         # build+test all via harness"
-		@echo "  make test-python-martian-kiss    # test a single implementation"
-		@echo "  make build-rust-martian-kiss run-rust-martian-kiss"
+		@echo "  make test-python-kiss            # test a single implementation"
+		@echo "  make build-rust-kiss run-rust-kiss"
 
 list: ## List detected language implementations
 	@echo $(LANG_DIRS)
@@ -34,13 +34,13 @@ ci: ## CI-friendly: run harness and continue on failures
 # Per-language targets (build/test/run)
 define MK_LANG
 build-$(1): ## Build $(1) Docker image
-	@docker build -f $(1)/Dockerfile -t martian:$(1) .
+	@docker build -f $(1)/Dockerfile -t martian:$(notdir $(1)) .
 
 test-$(1): ## Test $(1) via harness
 	@LANGS=$(1) ./tools/harness.sh
 
 run-$(1): ## Run $(1) with sample input 1
-	@cat samples/sample-input.txt | docker run --rm -i martian:$(1)
+	@cat samples/sample-input.txt | docker run --rm -i martian:$(notdir $(1))
 
 endef
 

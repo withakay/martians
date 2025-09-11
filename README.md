@@ -7,21 +7,21 @@ This repository contains working solutions to the Martian Robots programming cha
 
 ## Implementations
 
-Naming convention:
+Naming & layout:
 
-- `*-martian-kiss`: minimal, single‑file or tiny program per language (straightforward parsing + simulation).
-- `*-martian-ddd`: layered DDD examples (Domain, Application, CLI) to demonstrate richer architecture.
+- All implementations live under `langs/`.
+- Suffix `-kiss` for minimal versions; `-ddd` for layered DDD examples.
 
-Use `make list` to see what’s available. A few examples:
+Use `make list` to see what’s available. Examples:
 
-- `python-martian-kiss`, `python-martian-ddd`
-- `csharp-martian-kiss`, `csharp-martian-ddd`
-- `go-martian-kiss`, `go-martian-ddd`
-- `rust-martian-kiss`, `rust-martian-ddd`
-- `node-martian-kiss`, `node-martian-ddd`
-- `ts-deno-martian-kiss`, `ts-deno-martian-ddd`
-- `java-martian-kiss`, `java-martian-ddd`
-- `ocaml-martian-kiss`, `ocaml-martian-ddd`
+- `langs/python-kiss`, `langs/python-ddd`
+- `langs/csharp-kiss`, `langs/csharp-ddd`
+- `langs/go-kiss`, `langs/go-ddd`
+- `langs/rust-kiss`, `langs/rust-ddd`
+- `langs/node-kiss`, `langs/node-ddd`
+- `langs/ts-deno-kiss`, `langs/ts-deno-ddd`
+- `langs/java-kiss`, `langs/java-ddd`
+- `langs/ocaml-kiss`, `langs/ocaml-ddd`
 
 Each folder includes a `Dockerfile` and a small README with language‑specific notes.
 
@@ -51,9 +51,9 @@ Useful commands:
 - Test a single implementation by folder name
 
   ```bash
-  LANGS="python-martian-ddd" ./tools/harness.sh
+  LANGS="python-ddd" ./tools/harness.sh
   # or via Make’s generated targets
-  make test-python-martian-ddd
+  make test-langs/python-ddd
   ```
 
 - Build images for everything (without running)
@@ -68,15 +68,15 @@ Every implementation reads STDIN and writes to STDOUT (no prompts). Images are t
 Example with Python (DDD):
 
 ```bash
-docker build -f python-martian-ddd/Dockerfile -t martian:python-martian-ddd .
-cat samples/sample-input.txt | docker run --rm -i martian:python-martian-ddd
+docker build -f langs/python-ddd/Dockerfile -t martian:python-ddd .
+cat samples/sample-input.txt | docker run --rm -i martian:python-ddd
 ```
 
 Example with C# (.NET, KISS wrapper around the reference CLI):
 
 ```bash
-docker build -f csharp-martian-kiss/Dockerfile -t martian:csharp-martian-kiss .
-cat samples/sample-input.txt | docker run --rm -i martian:csharp-martian-kiss
+docker build -f langs/csharp-kiss/Dockerfile -t martian:csharp-kiss .
+cat samples/sample-input.txt | docker run --rm -i martian:csharp-kiss
 ```
 
 For local (non‑Docker) runs, see each language folder’s README.
@@ -85,7 +85,7 @@ For local (non‑Docker) runs, see each language folder’s README.
 
 `tools/harness.sh` will:
 
-- Discover folders matching `*-martian*` at repo root
+- Discover folders under `langs/*`
 - Build each image using its `Dockerfile`
 - For each `samples/*-input.txt`, pipe into the container and compare against `goldens/*-output.txt`
 - Normalize line endings and trailing blanks on both actual and expected
@@ -110,7 +110,7 @@ Tip: The expected output includes a trailing blank line; implementations are wri
 
 ## Adding Another Language
 
-1. Create a folder named like `<lang>-martian-kiss` (or `-ddd`).
+1. Create a folder under `langs/` named like `langs/<lang>-kiss` (or `langs/<lang>-ddd`).
 2. Add a `Dockerfile` that produces an executable reading from STDIN and writing to STDOUT.
 3. Ensure output exactly matches `goldens/sample-output.txt` for `samples/sample-input.txt`.
 4. Add a short README with Docker build/run instructions.
@@ -119,7 +119,7 @@ Tip: The expected output includes a trailing blank line; implementations are wri
 ## References
 
 - Challenge description: `CHALLENGE.md`
-- Original background: `csharp-martian-kiss/MartianRobot/README.md`
+- Original background: `langs/csharp-kiss/MartianRobot/README.md`
 
 ## DDD Overview
 
@@ -167,11 +167,11 @@ flowchart TB
 
 Folder mapping (examples):
 
-- C#: `csharp-martian-ddd/src/MartianDDD.{Domain|Application|Cli}`
-- Python: `python-martian-ddd/src/martian_ddd/{domain|application|cli}`
-- Go: `go-martian-ddd/internal/{domain,app}` and `go-martian-ddd/cmd/martian`
-- Rust: `rust-martian-ddd/martian-robot-ddd/src/{domain,application}` with `src/main.rs`
-- Node: `node-martian-ddd/src/{domain,app}` with `src/cli.js`
-- TS (Deno): `ts-deno-martian-ddd/src/*` (`domain.ts`, `app.ts`, `cli.ts`)
-- Java: `java-martian-ddd/src/*` (flat sources for brevity)
-- OCaml: `ocaml-martian-ddd/*` modules (`orientation.ml`, `robot.ml`, etc.)
+- C#: `langs/csharp-ddd/src/MartianDDD.{Domain|Application|Cli}`
+- Python: `langs/python-ddd/src/martian_ddd/{domain|application|cli}`
+- Go: `langs/go-ddd/internal/{domain,app}` and `langs/go-ddd/cmd/martian`
+- Rust: `langs/rust-ddd/martian-robot-ddd/src/{domain,application}` with `src/main.rs`
+- Node: `langs/node-ddd/src/{domain,app}` with `src/cli.js`
+- TS (Deno): `langs/ts-deno-ddd/src/*` (`domain.ts`, `app.ts`, `cli.ts`)
+- Java: `langs/java-ddd/src/*` (flat sources for brevity)
+- OCaml: `langs/ocaml-ddd/*` modules (`orientation.ml`, `robot.ml`, etc.)
